@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GainX - Earn Free Rewards</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%2322c55e'/%3E%3Cstop offset='1' stop-color='%2316a34a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Cg fill='none' stroke='%230d1117' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cellipse cx='25' cy='24' rx='12' ry='6'/%3E%3Cpath d='M13 24v9c0 3.3 5.4 6 12 6 2.2 0 4.2-.3 6-.9M13 33v8c0 3.3 5.4 6 12 6 2 0 3.9-.3 5.5-.8'/%3E%3Cellipse cx='40' cy='37' rx='11' ry='6'/%3E%3Cpath d='M29 37v9c0 3.3 4.9 6 11 6s11-2.7 11-6v-9'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+(function(){try{var t=localStorage.getItem('gx_theme');if(t==='light')document.documentElement.classList.add('light');}catch(e){}})();
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+:root{
+  --bg:#0d1117;--bg-elevated:#161b22;--bg-sunken:#0d1117;
+  --border:#30363d;--border-soft:#21262d;
+  --text:#e6edf3;--text-muted:#8b949e;--text-inv:#0d1117;
+  --accent:#22c55e;--accent-dark:#16a34a;--blue:#58a6ff;--yellow:#fbbf24;--red:#ef4444;
+  --note-bg:#1c2a1e;--note-text:#7ee2a0;
+  --pnote-bg:#2a231c;--pnote-text:#fbbf24;
+  --paid-bg:#1c2a1e;--paid-text:#22c55e;
+  --pending-bg:#2a231c;--pending-text:#fbbf24;
+  --rejected-bg:#2a1c1c;--rejected-text:#ef4444;
+  --refmsg-bg:#1c2233;--modal-veil:rgba(0,0,0,.7);--shadow:0 8px 30px rgba(0,0,0,.6);
+}
+html.light{
+  --bg:#f6f8fa;--bg-elevated:#ffffff;--bg-sunken:#eef1f4;
+  --border:#d0d7de;--border-soft:#e9ecef;
+  --text:#1f2328;--text-muted:#57606a;--text-inv:#ffffff;
+  --accent:#16a34a;--accent-dark:#15803d;--blue:#0969da;--yellow:#9a6700;--red:#cf222e;
+  --note-bg:#e6f6ea;--note-text:#166534;
+  --pnote-bg:#fff2d6;--pnote-text:#9a6700;
+  --paid-bg:#e6f6ea;--paid-text:#166534;
+  --pending-bg:#fff2d6;--pending-text:#9a6700;
+  --rejected-bg:#fde8e8;--rejected-text:#cf222e;
+  --refmsg-bg:#eaf1ff;--modal-veil:rgba(140,150,170,.4);--shadow:0 8px 30px rgba(140,150,170,.3);
+}
+body{background:var(--bg);color:var(--text);transition:background .2s,color .2s}
+a{color:var(--blue);text-decoration:none}
+.ic{width:16px;height:16px;stroke-width:2;vertical-align:-3px;flex-shrink:0}
+.ic.sm{width:13px;height:13px;vertical-align:-2px}
+.ic.lg{width:22px;height:22px;vertical-align:-5px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:var(--bg-elevated);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;letter-spacing:1px}
+.logo .coinicon{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-dark));display:flex;align-items:center;justify-content:center;color:var(--text-inv);box-shadow:0 0 12px rgba(34,197,94,.5)}
+.logo .coinicon .ic{width:18px;height:18px;stroke-width:2.4}
+.logo span.doll{color:var(--accent)}
+.balance{background:var(--bg-sunken);border:1px solid var(--accent);padding:6px 14px;border-radius:20px;display:flex;gap:6px;align-items:center;font-weight:700;color:var(--text);cursor:pointer;transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.balance:hover{background:var(--note-bg);border-color:var(--accent-dark);box-shadow:0 0 0 3px rgba(34,197,94,.12);transform:translateY(-1px)}
+.balance:active{transform:translateY(0)}
+.balance:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.balance .gift-link-icon{width:14px;height:14px;margin-left:2px;color:var(--accent)}
+.dollar{color:var(--accent);font-weight:800}
+.themeToggle{display:flex;align-items:center;gap:6px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:20px;padding:5px 10px;cursor:pointer;user-select:none;color:var(--text-muted)}
+.themeToggle .ic{width:14px;height:14px}
+.themeToggle .track{width:34px;height:18px;border-radius:10px;background:var(--border);position:relative;transition:background .2s}
+.themeToggle .knob{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:left .2s}
+html.light .themeToggle .knob{left:18px}
+.bellwrap{position:relative;cursor:pointer;color:var(--text)}
+.bellwrap .bell{width:20px;height:20px}
+.bellwrap .dot{position:absolute;top:-4px;right:-6px;background:var(--red);color:#fff;font-size:10px;font-weight:800;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.notifbox{position:absolute;top:36px;right:-80px;width:320px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);display:none;z-index:99;max-height:380px;overflow-y:auto}
+.notifbox.show{display:block}
+.notifbox .nhead{padding:10px 14px;font-weight:700;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.notifbox .nitem{padding:10px 14px;border-bottom:1px solid var(--border-soft);font-size:13px;line-height:1.4}
+.notifbox .nitem b{color:var(--blue)}
+.ntime{color:var(--text-muted);font-size:11px;margin-top:4px;display:block}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+.sidebar{width:220px;background:var(--bg-elevated);padding:16px;border-right:1px solid var(--border)}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;color:var(--text);margin-bottom:4px;font-weight:600;cursor:pointer}
+.sidebar a:hover:not(.active){background:var(--border-soft);color:var(--accent)}
+.sidebar a.active{position:relative;z-index:0;overflow:hidden;background:transparent;color:#fff;animation:sbFireGlow 1.6s ease-in-out infinite}
+.sidebar a.active::before{content:'';position:absolute;z-index:-2;left:-60%;top:-60%;width:220%;height:220%;background:conic-gradient(from 0deg,transparent 0deg,#ff7a18 35deg,#ffd23d 65deg,#ff2d2d 95deg,transparent 130deg,transparent 360deg);animation:sbFireSpin 2.4s linear infinite;filter:blur(1px)}
+.sidebar a.active::after{content:'';position:absolute;inset:3px;z-index:-1;background:var(--red);border-radius:6px}
+.sidebar a.active .ic{position:relative;z-index:1}
+@keyframes sbFireSpin{to{transform:rotate(1turn)}}
+@keyframes sbFireGlow{0%,100%{box-shadow:0 0 8px rgba(239,68,68,.45),0 0 2px rgba(255,159,10,.3)}50%{box-shadow:0 0 18px rgba(239,68,68,.85),0 0 8px rgba(255,159,10,.6)}}
+.main{flex:1;padding:24px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card h3{margin-bottom:8px;font-size:15px;color:var(--text-muted)}
+.card .big{font-size:28px;font-weight:800}
+.btn{display:inline-block;background:var(--accent);color:var(--text-inv);padding:10px 20px;border-radius:8px;font-weight:700;border:none;cursor:pointer;margin-top:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.blue{background:var(--blue)}
+.btn.yellow{background:var(--yellow)}
+.danger{background:var(--red);color:#fff;border:none;border-radius:6px;font-weight:700}
+#giftProfileBox input{padding:10px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px;color:var(--text);outline:none}
+#giftProfileBox input:focus{border-color:var(--blue)}
+.offers .offer{display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;gap:10px;flex-wrap:wrap}
+.tag{font-size:12px;padding:3px 10px;border-radius:12px;background:var(--border-soft);margin-right:4px;display:inline-flex;align-items:center;gap:4px}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tabs a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;background:var(--bg-elevated);border:1px solid var(--border);color:var(--text);cursor:pointer;font-weight:600;font-size:14px}
+.tabs a.active{background:var(--accent);color:var(--text-inv);border-color:var(--accent)}
+table{width:100%;border-collapse:collapse}
+td,th{padding:10px 14px;border-bottom:1px solid var(--border);text-align:left}
+.chat{background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;height:360px}
+.chat .msgs{flex:1;overflow-y:auto;padding:14px}
+.chat .msg{margin-bottom:10px;font-size:14px}.chat .msg b{color:var(--blue)}
+.chat .input{display:flex;border-top:1px solid var(--border)}
+.chat input{flex:1;background:none;border:none;color:var(--text);padding:12px;outline:none}
+.chat .input button{background:var(--accent);border:none;padding:0 20px;cursor:pointer;font-weight:700;color:var(--text-inv);display:flex;align-items:center}
+.overlay{position:fixed;inset:0;background:var(--modal-veil);display:none;align-items:center;justify-content:center;z-index:50}
+.overlay.show{display:flex}
+.authbox{background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;padding:28px;width:340px}
+.authbox h2{margin-bottom:16px}
+.authbox input{width:100%;padding:10px;margin-bottom:10px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px;color:var(--text);outline:none}
+.authbox select{width:100%;padding:10px;margin-bottom:10px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px;color:var(--text);outline:none}
+.authbox .switch{font-size:13px;margin-top:10px;cursor:pointer;color:var(--blue)}
+h2.sect{margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.note{background:var(--note-bg);border:1px solid var(--accent);color:var(--note-text);padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.pnote{background:var(--pnote-bg);border:1px solid var(--yellow);color:var(--pnote-text);padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.copy{background:var(--accent);border:none;color:var(--text-inv);border-radius:6px;padding:5px 12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.wmethods{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px;max-width:560px;margin-bottom:18px}
+.wmethod{background:var(--bg-elevated);border:2px solid var(--border);border-radius:12px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.wmethod:hover{border-color:var(--accent);transform:translateY(-2px)}
+.wmethod.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,197,94,.15)}
+.wmethod.wmethod-inactive{opacity:.5;cursor:not-allowed}
+.wmethod.wmethod-inactive:hover{border-color:var(--border);transform:none}
+.wmethod img{width:48px;height:48px;object-fit:contain}
+.wmethod span{font-weight:700;font-size:14px}
+#wForm input{width:100%;padding:10px;margin-bottom:10px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px;color:var(--text);outline:none}
+#wForm input:focus{border-color:var(--blue)}
+.wallmodal{width:95%;max-width:1100px;height:90vh;background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;overflow:hidden}
+#msgOverlay{z-index:150}
+.msgbox{text-align:center}
+.msgbox #msgText{margin-bottom:18px;line-height:1.5;white-space:pre-line;font-size:15px}
+.wallhead{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border)}
+.wallhead b{display:flex;align-items:center;gap:6px}
+#wallFrame{border:none;flex:1;width:100%}
+.histwrap{background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:16px}
+.histwrap h3{margin-bottom:10px;font-size:16px;display:flex;align-items:center;gap:8px}
+.status{font-size:12px;font-weight:700;padding:3px 10px;border-radius:12px;display:inline-flex;align-items:center;gap:4px}
+.st-paid{background:var(--paid-bg);color:var(--paid-text)}.st-pending{background:var(--pending-bg);color:var(--pending-text)}.st-rejected{background:var(--rejected-bg);color:var(--rejected-text)}
+.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-dark));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:var(--text-inv)}
+.boarduser{cursor:pointer}.boarduser:hover td{background:var(--border-soft)}
+.rank-top td{font-weight:700;position:relative}
+.rank-top td:first-child{font-weight:900}
+.rank-1 td{background:linear-gradient(90deg,rgba(255,215,0,.22),rgba(255,215,0,.04));border-left:3px solid #ffd700}
+.rank-2 td{background:linear-gradient(90deg,rgba(192,192,192,.22),rgba(192,192,192,.04));border-left:3px solid #c0c0c0}
+.rank-3 td{background:linear-gradient(90deg,rgba(205,127,50,.22),rgba(205,127,50,.04));border-left:3px solid #cd7f32}
+.rank-4 td{background:linear-gradient(90deg,rgba(88,166,255,.2),rgba(88,166,255,.04));border-left:3px solid var(--blue)}
+.rank-top:hover td{filter:brightness(1.08)}
+.verified-badge{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;font-size:10px;margin-left:5px;color:#0b0f14;vertical-align:middle}
+.rank-1 .verified-badge{background:#ffd700}
+.rank-2 .verified-badge{background:#c0c0c0}
+.rank-3 .verified-badge{background:#cd7f32}
+.rank-4 .verified-badge{background:var(--blue);color:#fff}
+.refmsg{background:var(--refmsg-bg);border:1px solid var(--blue);border-radius:10px;padding:12px 16px;margin-bottom:10px;font-size:14px}
+.refmsg b{color:var(--blue);display:flex;align-items:center;gap:6px}
+.mobnav{display:none}
+.mobnav .ic{width:20px;height:20px}
+.mobnav a span{font-size:10px;font-weight:600;line-height:1;margin-top:3px;white-space:nowrap}
+@media(max-width:760px){
+  .sidebar{display:none}
+  .main{padding:14px}
+  .notifbox{right:-10px}
+  .mobnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--bg-elevated);border-top:1px solid var(--border);z-index:60;overflow-x:auto;scrollbar-width:none}
+  .mobnav::-webkit-scrollbar{display:none}
+  .mobnav a{flex:1 0 64px;text-align:center;padding:8px 2px 6px;cursor:pointer;color:var(--text-muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+  .mobnav a.active{color:var(--accent)}
+  .layout{padding-bottom:64px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="coinicon"><i data-lucide="coins" class="ic"></i></div>
+    GAIN<span class="doll">X</span>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <button type="button" class="balance" id="balBox" style="display:none" onclick="navigateToTab('gift')" title="Go to Send Gift" aria-label="Current balance. Go to Send Gift"><span class="dollar">$</span> <span id="bal">0.00</span><i data-lucide="gift" class="ic gift-link-icon" aria-hidden="true"></i></button>
+    <div class="themeToggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark / light mode">
+      <i data-lucide="moon" class="ic"></i><span class="track"><span class="knob"></span></span><i data-lucide="sun" class="ic"></i>
+    </div>
+    <div class="bellwrap" id="bellWrap" style="display:none" onclick="toggleNotif(event)">
+      <i data-lucide="bell" class="ic bell"></i><span class="dot" id="bellDot" style="display:none">0</span>
+      <div class="notifbox" id="notifBox">
+        <div class="nhead"><span style="display:flex;align-items:center;gap:6px"><i data-lucide="bell" class="ic sm"></i> Notifications</span> <button class="copy" onclick="markSeen(event)">Mark all read</button></div>
+        <div id="notifList"><div class="nitem" style="color:var(--text-muted)">No notifications yet</div></div>
+      </div>
+    </div>
+    <button class="btn" id="authBtn" onclick="openAuth()">Log in</button>
+    <button class="btn blue" id="logoutBtn" style="display:none" onclick="logout()">Log out</button>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <a href="#dashboard" data-tab="dash" class="active" onclick="navigateToTab('dash');return false"><i data-lucide="home" class="ic"></i> Dashboard</a>
+    <a href="#earn" data-tab="offers" onclick="navigateToTab('offers');return false"><i data-lucide="target" class="ic"></i> Earn</a>
+    <a href="#overall" data-tab="walls" onclick="navigateToTab('walls');return false"><i data-lucide="layout-grid" class="ic"></i> Offerwalls</a>
+    <a href="#leaderboard" data-tab="board" onclick="navigateToTab('board');return false"><i data-lucide="trophy" class="ic"></i> Leaderboard</a>
+    <a href="#chat" data-tab="chatpg" onclick="navigateToTab('chatpg');return false"><i data-lucide="message-circle" class="ic"></i> Chat</a>
+    <a href="#profile" data-tab="profile" onclick="navigateToTab('profile');return false"><i data-lucide="user" class="ic"></i> My Profile</a>
+    <a href="#withdraw" data-tab="withdraw" onclick="navigateToTab('withdraw');return false"><i data-lucide="wallet" class="ic"></i> Withdraw</a>
+    <a href="#send-gift" data-tab="gift" onclick="navigateToTab('gift');return false"><i data-lucide="gift" class="ic"></i> Send Gift</a>
+  </div>
+
+  <div class="main">
+    <section id="dash">
+      <div class="cards">
+        <div class="card"><h3>Total Balance</h3><div class="big dollar" id="bal2">$0.00</div></div>
+        <div class="card"><h3>Tasks Completed</h3><div class="big" id="tasks">0</div></div>
+      </div>
+      <h2 class="sect" style="margin:24px 0 12px">Quick Offers</h2>
+      <div class="offers" id="quickList"></div>
+    </section>
+
+    <section id="offers" style="display:none">
+      <h2 class="sect">Earn Money</h2>
+      <div class="note"><i data-lucide="info" class="ic"></i> After completing an offer, your reward will be added once approved — you will be notified when approved.</div>
+      <div class="tabs" id="tabs">
+        <a class="active" onclick="setCat('All',this)">All</a>
+        <a onclick="setCat('Live',this)"><i data-lucide="radio" class="ic sm"></i> Live</a>
+        <a onclick="setCat('Offers',this)"><i data-lucide="target" class="ic sm"></i> Offers</a>
+        <a onclick="setCat('Games',this)"><i data-lucide="gamepad-2" class="ic sm"></i> Games</a>
+        <a onclick="setCat('Surveys',this)"><i data-lucide="clipboard-list" class="ic sm"></i> Surveys</a>
+        <a onclick="setCat('Ads',this)"><i data-lucide="tv" class="ic sm"></i> Ads</a>
+      </div>
+      <div class="offers" id="offerList">Loading offers...</div>
+    </section>
+
+    <section id="walls" style="display:none">
+      <h2 class="sect"><i data-lucide="layout-grid" class="ic"></i> Offerwalls</h2>
+      <div class="note"><i data-lucide="info" class="ic"></i> These offerwalls are external sites — complete them and once approved, you will receive your reward + notification.</div>
+      <div class="pnote"><i data-lucide="lock" class="ic"></i> <b>Private Walls:</b> Apply a referral code from My Profile to unlock these.</div>
+      <div class="tabs" id="wallTabs"></div>
+      <div class="offers" id="wallList"></div>
+    </section>
+
+    <section id="board" style="display:none">
+      <h2 class="sect">Top Earners <span style="font-size:13px;color:#8b949e;font-weight:400">(click a user to view their profile)</span></h2>
+      <table><thead><tr><th>#</th><th>User</th><th>Balance</th></tr></thead><tbody id="boardBody"></tbody></table>
+    </section>
+
+    <section id="chatpg" style="display:none">
+      <h2 class="sect">Global Chat</h2>
+      <div class="chat">
+        <div class="msgs" id="msgs"></div>
+        <div class="input"><input id="chatIn" placeholder="Log in to chat..." onkeydown="if(event.key==='Enter')sendChat()"><button onclick="sendChat()"><i data-lucide="send" class="ic"></i></button></div>
+      </div>
+    </section>
+
+    <!-- My Profile -->
+    <section id="profile" style="display:none">
+      <div class="cards" style="max-width:640px">
+        <div class="card" style="display:flex;gap:16px;align-items:center">
+          <div class="avatar" id="pAvatar">G</div>
+          <div>
+            <h2 style="font-size:20px" id="pName">—</h2>
+            <span style="color:var(--text-muted);font-size:13px">ID: <code style="color:var(--yellow)" id="pUid">—</code></span><br>
+            <span style="color:var(--text-muted);font-size:13px"><i data-lucide="ticket" class="ic sm"></i> Ref Code: <code style="color:var(--yellow)" id="pRef">—</code></span><br>
+            <span style="color:var(--text-muted);font-size:13px"><i data-lucide="calendar" class="ic sm"></i> Joined: <span id="pJoin" style="color:var(--text)">—</span></span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn yellow" id="applyRefBtn" onclick="openRefBox()"><i data-lucide="ticket" class="ic"></i> Apply Referral Code</button>
+      </div>
+
+      <div class="cards" style="margin-top:16px">
+        <div class="card"><h3>Total Balance</h3><div class="big dollar" id="pBal">$0.00</div></div>
+        <div class="card"><h3>Tasks Completed</h3><div class="big" id="pTasks">0</div></div>
+      </div>
+      <div class="histwrap" id="refMsgsWrap" style="display:none">
+        <h3><i data-lucide="mail" class="ic"></i> Private Messages (Referral)</h3>
+        <div id="refMsgs"></div>
+      </div>
+      <div class="histwrap">
+        <h3><i data-lucide="gift" class="ic"></i> Gifts &amp; Messages Received</h3>
+        <div id="giftList"><span style="color:var(--text-muted)">No gifts or messages yet</span></div>
+      </div>
+      <div class="histwrap">
+        <h3><i data-lucide="check-circle" class="ic"></i> Earning History</h3>
+        <table><thead><tr><th>Offer</th><th>Network</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="eHist"><tr><td colspan="5" style="color:var(--text-muted)">Loading...</td></tr></tbody></table>
+      </div>
+      <div class="histwrap">
+        <h3><i data-lucide="wallet" class="ic"></i> Withdraw History</h3>
+        <table><thead><tr><th>Method</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="wHist"><tr><td colspan="4" style="color:var(--text-muted)">Loading...</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <!-- Public profile -->
+    <section id="pubprofile" style="display:none">
+      <button class="btn blue" onclick="goBackFromPub()" style="display:inline-flex;align-items:center;gap:6px"><i data-lucide="arrow-left" class="ic"></i> Back</button>
+      <div class="cards" style="max-width:640px;margin-top:14px">
+        <div class="card" style="display:flex;gap:16px;align-items:center">
+          <div class="avatar" id="pubAvatar">G</div>
+          <div>
+            <span id="pubDomainTag" style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.4px;color:var(--accent);background:var(--note-bg);border:1px solid var(--accent);border-radius:10px;padding:2px 8px;margin-bottom:4px">GainX · Profile</span>
+            <h2 style="font-size:20px" id="pubName">—</h2>
+            <span style="color:var(--text-muted);font-size:13px"><i data-lucide="calendar" class="ic sm"></i> Joined: <span id="pubJoin" style="color:var(--text)">—</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="cards" style="margin-top:16px">
+        <div class="card"><h3>Total Balance</h3><div class="big dollar" id="pubBal">$0.00</div></div>
+        <div class="card"><h3>Tasks Completed</h3><div class="big" id="pubTasks">0</div></div>
+      </div>
+      <div class="histwrap">
+        <h3><i data-lucide="gift" class="ic"></i> Gifts Received</h3>
+        <div id="pubGifts"><span style="color:var(--text-muted)">No gifts yet</span></div>
+      </div>
+      <div class="histwrap">
+        <h3><i data-lucide="check-circle" class="ic"></i> Earning History</h3>
+        <table><thead><tr><th>Offer</th><th>Network</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="pubeHist"><tr><td colspan="5" style="color:var(--text-muted)">Loading...</td></tr></tbody></table>
+      </div>
+      <div class="histwrap">
+        <h3><i data-lucide="wallet" class="ic"></i> Withdraw History</h3>
+        <table><thead><tr><th>Method</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="pubwHist"><tr><td colspan="4" style="color:var(--text-muted)">Loading...</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <!-- Send Gift and user profile viewer -->
+    <section id="gift" style="display:none">
+      <h2 class="sect"><i data-lucide="gift" class="ic"></i> Send Gift</h2>
+      <div class="note"><i data-lucide="info" class="ic"></i> Find a user by username, review their profile, and send a balance gift directly.</div>
+      <div class="card" id="giftProfileBox" style="padding:15px;max-width:640px;margin-bottom:15px">
+        <h3 style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><i data-lucide="gift" class="ic"></i> Send Gift &amp; <i data-lucide="search" class="ic"></i> User Profile Viewer</h3>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+          <input id="giftTargetUser" placeholder="Receiver / Search Username" style="flex:1;min-width:180px">
+          <button class="btn blue" onclick="viewUserProfile()" style="margin-top:0;background:var(--blue);color:var(--text-inv);font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px"><i data-lucide="search" class="ic"></i> View Profile</button>
+        </div>
+        <input id="giftAmount" type="number" min="0.01" step="0.01" placeholder="Amount ($)" style="width:100%;margin-bottom:8px">
+        <button class="btn" style="width:100%;margin-top:0;display:flex;align-items:center;justify-content:center;gap:6px" onclick="sendGift()"><i data-lucide="gift" class="ic"></i> Send Gift</button>
+      </div>
+
+      <div id="userProfileModal" class="card" style="display:none;border:1px solid var(--blue);padding:15px;margin-bottom:15px;background:var(--bg-elevated);overflow-x:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px">
+          <h3 id="vpTitle" style="color:var(--blue);margin:0;display:flex;align-items:center;gap:8px"><i data-lucide="user" class="ic"></i> User Profile</h3>
+          <button class="danger" onclick="document.getElementById('userProfileModal').style.display='none'" style="cursor:pointer;padding:4px 10px;display:inline-flex;align-items:center;gap:5px"><i data-lucide="x" class="ic sm"></i> Close</button>
+        </div>
+        <div id="vpStats" style="margin-bottom:12px;font-size:14px;color:var(--text)"></div>
+        <h4 style="margin-bottom:6px;color:var(--text-muted)">Recent Earnings &amp; Activities</h4>
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border);color:var(--text-muted);font-size:12px">
+            <th style="text-align:left;padding:6px">Task / Details</th><th style="text-align:left;padding:6px">Amount</th><th style="text-align:left;padding:6px">Status</th><th style="text-align:left;padding:6px">Date</th>
+          </tr></thead>
+          <tbody id="vpHistList"><tr><td colspan="4" style="text-align:center;color:var(--text-muted)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="withdraw" style="display:none">
+      <h2 class="sect"><i data-lucide="wallet" class="ic"></i> Withdraw</h2>
+      <div class="pnote" id="wScheduleNote"><i data-lucide="calendar" class="ic"></i> <span id="wScheduleNoteText">Withdrawal is only open on Sundays and Mondays!</span></div>
+      <div class="note"><i data-lucide="info" class="ic"></i> Minimum withdraw for every method below is strictly <b>&nbsp;$50&nbsp;</b>.</div>
+      <div class="wmethods" id="wMethodsGrid">
+        <div class="wmethod" data-method="bKash" onclick="selectWithdrawMethod('bKash')">
+          <img src="https://www.logo.wine/a/logo/BKash/BKash-Icon-Logo.wine.svg" alt="bKash logo">
+          <span>bKash</span>
+        </div>
+        <div class="wmethod" data-method="Nagad" onclick="selectWithdrawMethod('Nagad')">
+          <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad logo">
+          <span>Nagad</span>
+        </div>
+        <div class="wmethod" data-method="PayPal" onclick="selectWithdrawMethod('PayPal')">
+          <img src="https://www.logo.wine/a/logo/PayPal/PayPal-Logo.wine.svg" alt="PayPal logo">
+          <span>PayPal</span>
+        </div>
+        <div class="wmethod" data-method="Rocket" onclick="selectWithdrawMethod('Rocket')">
+          <img src="https://play-lh.googleusercontent.com/hcRpk0BWUTNPwr1bRWzNVKGZd2lbtdtNS9d__2w6glKwAUE_xvTh8FjkipEnzrlbEVCGsQ-75UwA5HRAYzHEdw=w240-h480-rw" alt="Rocket logo">
+          <span>Rocket</span>
+        </div>
+      </div>
+      <div class="card" id="wFormCard" style="max-width:420px;display:none">
+        <div id="wForm">
+          <h3 id="wFormTitle" style="margin-bottom:8px;display:flex;align-items:center;gap:8px"></h3>
+          <p style="color:var(--text-muted)">Minimum: <span class="dollar">$50</span></p>
+          <input id="wAmt" type="number" step="0.01" min="50" placeholder="Amount in USD (minimum 50)">
+          <input id="wContact" placeholder="Wallet / Account Number">
+          <input id="wName" placeholder="Your Full Name">
+          <button class="btn" id="withdrawSubmitBtn" onclick="withdraw()">Withdraw Request</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="mobnav" id="mobnav">
+  <a href="#dashboard" data-tab="dash" class="active" onclick="navigateToTab('dash');return false"><i data-lucide="home" class="ic"></i><span>Home</span></a>
+  <a href="#earn" data-tab="offers" onclick="navigateToTab('offers');return false"><i data-lucide="target" class="ic"></i><span>Earn</span></a>
+  <a href="#overall" data-tab="walls" onclick="navigateToTab('walls');return false"><i data-lucide="layout-grid" class="ic"></i><span>Walls</span></a>
+  <a href="#leaderboard" data-tab="board" onclick="navigateToTab('board');return false"><i data-lucide="trophy" class="ic"></i><span>Board</span></a>
+  <a href="#chat" data-tab="chatpg" onclick="navigateToTab('chatpg');return false"><i data-lucide="message-circle" class="ic"></i><span>Chat</span></a>
+  <a href="#profile" data-tab="profile" onclick="navigateToTab('profile');return false"><i data-lucide="user" class="ic"></i><span>Profile</span></a>
+  <a href="#withdraw" data-tab="withdraw" onclick="navigateToTab('withdraw');return false"><i data-lucide="wallet" class="ic"></i><span>Withdraw</span></a>
+  <a href="#send-gift" data-tab="gift" onclick="navigateToTab('gift');return false"><i data-lucide="gift" class="ic"></i><span>Gift</span></a>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="authbox">
+    <h2 id="authTitle">Log in</h2>
+    <input id="aUser" placeholder="Username">
+    <input id="aEmail" type="email" placeholder="Email (for registration)" style="display:none">
+    <input id="aPass" type="password" placeholder="Password">
+    <button class="btn" style="width:100%" onclick="doAuth()">Continue</button>
+    <div class="switch" onclick="toggleAuth()"><span id="authSwitch">No account? Register</span></div>
+  </div>
+</div>
+
+<div class="overlay" id="refOverlay">
+  <div class="authbox">
+    <h2 style="display:flex;align-items:center;gap:8px"><i data-lucide="ticket" class="ic"></i> Apply Referral Code</h2>
+    <div class="note" style="margin-bottom:12px">Apply a valid referral code to unlock Private Walls and receive exclusive messages for that code.</div>
+    <input id="refInput" placeholder="Enter referral code (e.g. XXX)" style="text-transform:uppercase">
+    <button class="btn yellow" style="width:100%" onclick="applyRefCode()">Apply Code</button>
+    <div class="switch" onclick="document.getElementById('refOverlay').classList.remove('show')"><i data-lucide="x" class="ic sm"></i> Close</div>
+  </div>
+</div>
+
+<div class="overlay" id="msgOverlay" onclick="if(event.target===this)closeMsgModal()">
+  <div class="authbox msgbox">
+    <p id="msgText"></p>
+    <button class="btn" style="width:100%" onclick="closeMsgModal()">OK</button>
+  </div>
+</div>
+
+<div class="overlay" id="wallModal">
+  <div class="wallmodal">
+    <div class="wallhead">
+      <b id="wallModalTitle"><i data-lucide="unlock" class="ic"></i> Offerwall</b>
+      <button class="copy" onclick="closeWall()"><i data-lucide="x" class="ic sm"></i> Close</button>
+    </div>
+    <iframe id="wallFrame" allow="clipboard-write"></iframe>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://rukciqtyavwtnohfdpxo.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1a2NpcXR5YXZ3dG5vaGZkcHhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzNzQ3MDAsImV4cCI6MjEwNDk1MDcwMH0.Zfywx6KoviqEb8SyB6IUCTKNUap9NdgQV5-JY1iuA2g';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const session=()=>localStorage.getItem('gx_session');
+const setSession=u=>u?localStorage.setItem('gx_session',u):localStorage.removeItem('gx_session');
+let isRegister=false,allOffers=[],curCat='All',chatCache=[],myUid='',myUser='',myRefCode='',lastPage='dash';
+const SITE_NAME='GainX';
+const DEFAULT_TITLE=document.title;
+
+/* ============ TAB / HASH ROUTING ============ */
+const TAB_IDS=['dash','offers','walls','board','chatpg','profile','withdraw','gift'];
+const HASH_MAP={dash:'dashboard',offers:'earn',walls:'overall',board:'leaderboard',chatpg:'chat',profile:'profile',withdraw:'withdraw',gift:'send-gift'};
+const ID_FROM_HASH=Object.fromEntries(Object.entries(HASH_MAP).map(([id,h])=>[h,id]));
+function hashToId(hash){return ID_FROM_HASH[(hash||'').replace(/^#/,'').toLowerCase()]||null}
+function getInitialTab(){
+  const fromHash=hashToId(location.hash);
+  if(fromHash)return fromHash;
+  const stored=localStorage.getItem('gx_lastTab');
+  if(stored&&TAB_IDS.includes(stored))return stored;
+  return 'dash';
+}
+function navigateToTab(id){
+  if(!HASH_MAP[id])id='dash';
+  localStorage.setItem('gx_lastTab',id);
+  const targetHash='#'+HASH_MAP[id];
+  history.pushState(null,'',targetHash);
+  location.reload();
+}
+
+/* ============ MESSAGE MODAL (replaces native alert()) ============ */
+function closeMsgModal(){document.getElementById('msgOverlay').classList.remove('show')}
+function alert(msg){
+  document.getElementById('msgText').textContent=String(msg==null?'':msg);
+  document.getElementById('msgOverlay').classList.add('show');
+}
+
+const toDol=p=>'$'+Number(p||0).toFixed(2);
+const toAmt=d=>Number(Number(d||0).toFixed(2));
+const escapeHtml=value=>String(value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+
+const ua=navigator.userAgent;
+const myDevice=/android|iphone|ipad|ipod|mobile/i.test(ua)?'android':'desktop';
+function deviceOk(o){if(!o.device||o.device==='all')return true;return o.device===myDevice||o.device==='all';}
+
+/* ============ THEME ============ */
+function applyTheme(t){document.documentElement.classList.toggle('light',t==='light')}
+function toggleTheme(){
+  const next=document.documentElement.classList.contains('light')?'dark':'light';
+  applyTheme(next);
+  localStorage.setItem('gx_theme',next);
+}
+function refreshIcons(){if(window.lucide)lucide.createIcons()}
+
+/* ============ WITHDRAW METHOD ============ */
+const MOBILE_METHODS=['bKash','Nagad','Rocket'];
+const WITHDRAW_MIN=50;
+const WITHDRAW_SCHEDULE_MSG='Withdrawal is only open on Sundays and Mondays!';
+let selectedWithdrawMethod=null;
+
+/* Date#getDay(): Sunday is 0 and Monday is 1. */
+function isWithdrawDayActive(now=new Date()){
+  const day=now.getDay();
+  return day===0||day===1;
+}
+/* Returns the [start,end) instants covering the current (or most recently elapsed) Sunday-Monday window,
+   used to enforce a single withdraw request per week. */
+function withdrawWeekWindow(now=new Date()){
+  const day=now.getDay();
+  const daysSinceSunday=day;
+  const start=new Date(now.getFullYear(),now.getMonth(),now.getDate()-daysSinceSunday,0,0,0,0);
+  const end=new Date(start.getFullYear(),start.getMonth(),start.getDate()+2,0,0,0,0);
+  return {start,end};
+}
+function renderWithdrawScheduleNotice(){
+  const el=document.getElementById('wScheduleNoteText');
+  const noteBox=document.getElementById('wScheduleNote');
+  if(!el||!noteBox)return;
+  const active=isWithdrawDayActive();
+  if(active){
+    el.textContent=WITHDRAW_SCHEDULE_MSG+' (Active today ✅)';
+    noteBox.classList.remove('pnote');noteBox.classList.add('note');
+  }else{
+    el.textContent=WITHDRAW_SCHEDULE_MSG+' (Closed today ⛔)';
+    noteBox.classList.remove('note');noteBox.classList.add('pnote');
+  }
+  document.querySelectorAll('.wmethod').forEach(elm=>{
+    elm.classList.toggle('wmethod-inactive',!active);
+    elm.setAttribute('aria-disabled',String(!active));
+  });
+  const submit=document.getElementById('withdrawSubmitBtn');
+  if(submit)submit.disabled=!active;
+  if(!active){
+    selectedWithdrawMethod=null;
+    document.querySelectorAll('.wmethod').forEach(elm=>elm.classList.remove('active'));
+    const formCard=document.getElementById('wFormCard');
+    if(formCard)formCard.style.display='none';
+  }
+}
+function selectWithdrawMethod(method){
+  if(!isWithdrawDayActive())return alert(WITHDRAW_SCHEDULE_MSG);
+  selectedWithdrawMethod=method;
+  document.querySelectorAll('.wmethod').forEach(el=>el.classList.toggle('active',el.dataset.method===method));
+  document.getElementById('wFormCard').style.display='block';
+  document.getElementById('wFormTitle').textContent=method+' Withdraw';
+  const inp=document.getElementById('wContact');
+  inp.placeholder=method==='PayPal'?'PayPal Email':'Mobile Number (e.g. 01XXXXXXXXX)';
+}
+
+const validEmail=e=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+async function myIP(){
+  try{const r=await fetch('https://api.ipify.org?format=json');const j=await r.json();return j.ip}catch(e){return 'unknown'}
+}
+
+/* ============ NOTIFICATIONS ============ */
+function updateBadge(c){
+  const dot=document.getElementById('bellDot');
+  if(c>0){dot.textContent=c>99?'99+':c;dot.style.display='flex'}
+  else dot.style.display='none';
+}
+let liveUnreadCount=0;
+const recentLiveEvents=new Map();
+function signalLiveNotification(key,title,message,createdAt=new Date().toISOString()){
+  const now=Date.now();
+  for(const [eventKey,time] of recentLiveEvents){if(now-time>5000)recentLiveEvents.delete(eventKey)}
+  if(recentLiveEvents.has(key))return;
+  recentLiveEvents.set(key,now);
+  liveUnreadCount+=1;
+  const current=Number(document.getElementById('bellDot')?.textContent)||0;
+  updateBadge(Math.max(current,liveUnreadCount));
+  const list=document.getElementById('notifList');
+  if(list){
+    const empty=list.querySelector('.notif-empty');
+    if(empty)empty.remove();
+    list.insertAdjacentHTML('afterbegin',`<div class="nitem live-notif">⚡ <b>${escapeHtml(title)}</b><br>${escapeHtml(message)}<span class="ntime">${new Date(createdAt).toLocaleString()}</span></div>`);
+  }
+}
+async function checkNewNotifs(){
+  const s=session();if(!s){updateBadge(0);return}
+  const seen=localStorage.getItem('gx_seen')||'';
+  const {data:bcast}=await sb.from('gx_notifs').select('created_at').or(`username.eq.all,username.ilike."${s}"`).order('created_at',{ascending:false}).limit(20);
+  const storedUnread=(bcast||[]).filter(x=>new Date(x.created_at)>new Date(seen)).length;
+  updateBadge(Math.max(storedUnread,liveUnreadCount));
+}
+function toggleNotif(e){
+  e&&e.stopPropagation();
+  document.getElementById('notifBox').classList.toggle('show');
+  if(document.getElementById('notifBox').classList.contains('show'))markSeen();
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.bellwrap'))document.getElementById('notifBox').classList.remove('show')});
+function markSeen(e){
+  e&&e.stopPropagation();
+  localStorage.setItem('gx_seen',new Date().toISOString());
+  liveUnreadCount=0;
+  updateBadge(0);
+}
+async function loadNotifs(){
+  const s=session();if(!s)return;
+  const {data:bcast}=await sb.from('gx_notifs').select('*').or(`username.eq.all,username.ilike."${s}"`).order('created_at',{ascending:false}).limit(20);
+  const notifs=(bcast||[]).map(x=>{
+    const msg=x.message||x.body||'';
+    return{t:'📢 <b>'+(x.title||'Notification')+'</b>'+(msg?'<br>'+msg:''),d:x.created_at};
+  });
+  notifs.sort((a,b)=>new Date(b.d)-new Date(a.d));
+  document.getElementById('notifList').innerHTML=notifs.length?
+    notifs.slice(0,20).map(n=>`<div class="nitem ${n.c||''}">${n.t}<span class="ntime">${new Date(n.d).toLocaleString()}</span></div>`).join('')
+    :'<div class="nitem notif-empty" style="color:#8b949e">No notifications yet</div>';
+  checkNewNotifs();
+}
+
+/* ============ HISTORIES ============ */
+function earningStatus(status){
+  const normalized=String(status||'pending').toLowerCase();
+  if(normalized==='pending')return{className:'pending',label:'Pending (Will be approved automatically within 1 hour)'};
+  if(normalized==='rejected')return{className:'rejected',label:'❌ Rejected'};
+  return{className:'paid',label:'✅ Approved'};
+}
+function histHTML(eh){
+  return (eh||[]).length?(eh||[]).map(x=>{
+    const status=earningStatus(x.status);
+    return `<tr>
+    <td>${x.offer_name||x.title||'Task'}</td><td>${x.network||'Direct'}</td><td class="dollar">${toDol(x.amount)}</td>
+    <td><span class="status st-${status.className}">${status.label}</span></td>
+    <td style="color:#8b949e">${new Date(x.created_at).toLocaleDateString()}</td></tr>`;
+  }).join('')
+    :'<tr><td colspan="5" style="color:#8b949e">No earnings yet</td></tr>';
+}
+function wHistHTML(wh){
+  return (wh||[]).length?(wh||[]).map(x=>`<tr>
+    <td>${x.method||''}</td><td class="dollar">${toDol(x.amount)}</td>
+    <td><span class="status st-${x.status||'pending'}">${x.status==='paid'?'🎉 Completed':x.status==='rejected'?'❌ Rejected':'⏳ Pending'}</span></td>
+    <td style="color:#8b949e">${new Date(x.created_at).toLocaleDateString()}</td></tr>`).join('')
+    :'<tr><td colspan="4" style="color:#8b949e">No withdrawals yet</td></tr>';
+}
+async function loadHist(s,pre=''){
+  const eh=await sb.from('gx_earnings').select('*').ilike('username',s).order('created_at',{ascending:false}).limit(50);
+  document.getElementById(pre+'eHist').innerHTML=histHTML(eh.data);
+  const wh=await sb.from('gx_withdrawals').select('*').ilike('username',s).order('created_at',{ascending:false}).limit(50);
+  document.getElementById(pre+'wHist').innerHTML=wHistHTML(wh.data);
+}
+async function loadGifts(user,elId){
+  const {data:g}=await sb.from('gx_gifts').select('*').ilike('to_user',user).order('created_at',{ascending:false}).limit(20);
+  document.getElementById(elId).innerHTML=(g&&g.length)?g.map(x=>
+    `<div class="refmsg"><b>@${x.from_user}</b> ${x.amount>0?'gifted <span class="dollar">'+toDol(x.amount)+'</span>':''}<br>${x.message||''}
+    <span class="ntime">${new Date(x.created_at).toLocaleString()}</span></div>`).join('')
+    :'<span style="color:#8b949e">No gifts or messages yet</span>';
+}
+
+/* ============ MAIN REFRESH ============ */
+const cachedBalanceKey=u=>'gx_balance_'+String(u||'').toLowerCase();
+function applyCachedBalance(){
+  const s=session();if(!s)return;
+  const cached=localStorage.getItem(cachedBalanceKey(s));
+  if(cached===null)return;
+  const bal=document.getElementById('bal');if(bal)bal.textContent=Number(cached).toFixed(2);
+  const bal2=document.getElementById('bal2');if(bal2)bal2.textContent=toDol(cached);
+  const pBal=document.getElementById('pBal');if(pBal)pBal.textContent=toDol(cached);
+}
+async function refresh(){
+  const s=session();
+  document.getElementById('balBox').style.display=s?'flex':'none';
+  document.getElementById('bellWrap').style.display=s?'block':'none';
+  document.getElementById('logoutBtn').style.display=s?'inline-block':'none';
+  document.getElementById('authBtn').style.display=s?'none':'inline-block';
+  const {data:top}=await sb.from('gx_users').select('username,coins').eq('leaderboard_hidden',false).order('coins',{ascending:false}).limit(20);
+  document.getElementById('boardBody').innerHTML=(top||[]).map((x,i)=>{
+    const rank=i+1;
+    const isTop=rank<=4;
+    const badge=isTop?`<span class="verified-badge" title="Top ${rank} Verified">✓</span>`:'';
+    return `<tr class="boarduser${isTop?' rank-top rank-'+rank:''}" onclick="openPubProfile('${x.username}')"><td>${rank}</td><td>${x.username}${badge}</td><td class="dollar">${toDol(x.coins)}</td></tr>`;
+  }).join('');
+  if(s){
+    let {data:u}=await sb.from('gx_users').select('*').ilike('username',s).maybeSingle();
+    if(u){
+      if(u.banned){alert('Account banned');return logout();}
+      if(!u.uid){
+        u.uid='GX-'+Math.random().toString(36).slice(2,10).toUpperCase();
+        await sb.from('gx_users').update({uid:u.uid}).eq('username',s);
+      }
+      document.getElementById('bal').textContent=Number(u.coins||0).toFixed(2);
+      document.getElementById('bal2').textContent=toDol(u.coins);
+      localStorage.setItem(cachedBalanceKey(u.username),Number(u.coins||0));
+      document.getElementById('tasks').textContent=u.tasks||0;
+      myUid=u.uid;myUser=u.username;
+      myRefCode=(u.referral_code||u.ref_code||'').trim().toUpperCase();
+      document.getElementById('pName').textContent=u.username;
+      document.getElementById('pAvatar').textContent=u.username.charAt(0).toUpperCase();
+      document.getElementById('pUid').textContent=u.uid;
+      document.getElementById('pRef').textContent=myRefCode||'None';
+      document.getElementById('pJoin').textContent=u.created_at?new Date(u.created_at).toLocaleDateString():'—';
+      document.getElementById('pBal').textContent=toDol(u.coins);
+      document.getElementById('pTasks').textContent=u.tasks||0;
+      document.getElementById('applyRefBtn').textContent=myRefCode?'🎟️ Ref Code Applied: '+myRefCode:'🎟️ Apply Referral Code';
+      loadHist(s);
+      loadRefMsgs();
+      loadGifts(myUser,'giftList');
+    }
+    document.getElementById('chatIn').placeholder='Message #global...';
+    loadNotifs();
+  }
+}
+
+/* ============ REF CODE APPLY ============ */
+function openRefBox(){
+  const s=session();if(!s)return openAuth();
+  document.getElementById('refOverlay').classList.add('show');
+}
+async function applyRefCode(){
+  const s=session();if(!s)return openAuth();
+  const code=document.getElementById('refInput').value.trim().toUpperCase();
+  if(!code)return alert('Please enter a referral code');
+  await sb.from('gx_users').update({referral_code:code}).ilike('username',s);
+  myRefCode=code;
+  document.getElementById('pRef').textContent=code;
+  document.getElementById('applyRefBtn').textContent='🎟️ Ref Code Applied: '+code;
+  document.getElementById('refOverlay').classList.remove('show');
+  renderWalls();
+  loadRefMsgs();
+  alert('✅ Referral code "'+code+'" applied!\n🔒 Private walls unlocked & exclusive messages loaded.');
+}
+async function loadRefMsgs(){
+  if(!myRefCode){document.getElementById('refMsgsWrap').style.display='none';return}
+  const {data:msgs}=await sb.from('gx_refmsgs').select('*').eq('code',myRefCode).order('created_at',{ascending:false}).limit(20);
+  if(msgs&&msgs.length){
+    document.getElementById('refMsgsWrap').style.display='block';
+    document.getElementById('refMsgs').innerHTML=msgs.map(m=>
+      `<div class="refmsg"><b>💌 ${m.title||'Message'}</b><br>${m.message||''}<br>
+      <span class="ntime">${m.created_at?new Date(m.created_at).toLocaleString():''}</span></div>`).join('');
+  }else document.getElementById('refMsgsWrap').style.display='none';
+}
+
+/* ============ PUBLIC PROFILE ============ */
+async function openPubProfile(username){
+  const cur=document.querySelector('.main section[style*="block"]');
+  lastPage=cur?cur.id:'dash';
+  const {data:u}=await sb.from('gx_users').select('*').ilike('username',username).maybeSingle();
+  if(!u)return alert('User not found');
+  document.title=`${SITE_NAME} - Profile: @${u.username}`;
+  document.getElementById('pubName').textContent='@'+u.username;
+  document.getElementById('pubDomainTag').textContent=`${SITE_NAME} · Profile`;
+  document.getElementById('pubAvatar').textContent=u.username.charAt(0).toUpperCase();
+  document.getElementById('pubJoin').textContent=u.created_at?new Date(u.created_at).toLocaleDateString():'—';
+  document.getElementById('pubBal').textContent=toDol(u.coins);
+  document.getElementById('pubTasks').textContent=u.tasks||0;
+  loadHist(username,'pub');
+  loadGifts(username,'pubGifts');
+  show('pubprofile',null);
+}
+function goBackFromPub(){show(lastPage==='pubprofile'?'dash':lastPage,null)}
+
+/* ============ GIFT / PROFILE VIEWER ============ */
+async function sendGift(){
+  const sender = session();
+  if(!sender) return openAuth();
+
+  const receiverInput = (document.getElementById('giftTargetUser')?.value || '').trim();
+  const amount = toAmt(document.getElementById('giftAmount')?.value);
+
+  if(!receiverInput || amount <= 0) return alert('❌ Please enter a valid username and amount.');
+  if(sender.toLowerCase() === receiverInput.toLowerCase()) return alert('❌ You cannot send a gift to your own account.');
+
+  try{
+    // 1. Verify the sender's balance
+    const { data: sUser, error: sErr } = await sb.from('gx_users').select('username,coins').ilike('username', sender).maybeSingle();
+    if(sErr || !sUser) return alert('❌ We could not verify your account.');
+    if(Number(sUser.coins) < amount) return alert('❌ Your account does not have enough balance.');
+
+    // 2. Verify the recipient's account
+    const { data: rUser, error: rErr } = await sb.from('gx_users').select('username,coins').ilike('username', receiverInput).maybeSingle();
+    if(rErr || !rUser) return alert('❌ The recipient account could not be found.');
+
+    const newSenderBal = Number((Number(sUser.coins) - amount).toFixed(2));
+    const newReceiverBal = Number((Number(rUser.coins) + amount).toFixed(2));
+
+    // 3. Update the sender's and recipient's balances
+    const { error: debitErr } = await sb.from('gx_users').update({ coins: newSenderBal }).ilike('username', sUser.username);
+    if(debitErr) throw debitErr;
+
+    const { error: creditErr } = await sb.from('gx_users').update({ coins: newReceiverBal }).ilike('username', rUser.username);
+    if(creditErr) throw creditErr;
+
+    // 4. Add an entry to the recipient's earnings history
+    await sb.from('gx_earnings').insert([{
+      username: rUser.username,
+      offer_name: `🎁 Gift from @${sUser.username}`,
+      amount: amount,
+      status: 'paid',
+      network: 'Transfer'
+    }]);
+
+    // 5. Add an entry to the sender's withdrawal table using only the amount column
+    const { error: wdErr } = await sb.from('gx_withdrawals').insert([{
+      username: sUser.username,
+      method: `🎁 Gift to @${rUser.username}`,
+      amount: amount,
+      status: 'paid',
+      created_at: new Date().toISOString()
+    }]);
+
+    if(wdErr) {
+      console.error("Withdrawal insert error:", wdErr);
+      throw wdErr;
+    }
+
+    // 6. Create the recipient's notification and gift record
+    await sb.from('gx_notifs').insert([{
+      username: rUser.username,
+      title: '🎁 Gift Received!',
+      body: `You received $${amount.toFixed(2)} gift from @${sUser.username}!`
+    }]);
+
+    await sb.from('gx_gifts').insert([{
+      from_user: sUser.username,
+      to_user: rUser.username,
+      message: '',
+      amount: amount
+    }]);
+
+    alert(`✅ Successfully sent $${amount.toFixed(2)} to @${rUser.username}. The transfer has been added to your withdrawal history.`);
+
+    document.getElementById('giftAmount').value = '';
+
+    // Refresh the balance and withdrawal history immediately
+    await refresh();
+    if(typeof loadHist === 'function') await loadHist(sUser.username, '');
+
+  }catch(error){
+    console.error('Gift transfer failed', error);
+    alert('❌ The gift could not be sent: ' + (error.message || 'Unknown error'));
+  }
+}
+
+async function viewUserProfile(){
+  const target=(document.getElementById('giftTargetUser')?.value||'').trim();
+  if(!target)return alert('Please enter a username to view a profile.');
+  const {data:u,error:uErr}=await sb.from('gx_users').select('username,coins,tasks,created_at,banned').ilike('username',target).maybeSingle();
+  if(uErr||!u)return alert(`❌ No user named "${target}" could be found.`);
+
+  const modal=document.getElementById('userProfileModal');
+  modal.style.display='block';
+  document.getElementById('vpTitle').textContent=`👤 Profile: @${u.username}${u.banned?' (Banned)':''}`;
+  document.getElementById('vpTitle').style.color=u.banned?'#ef4444':'#58a6ff';
+  document.getElementById('vpStats').innerHTML=`<b>Current Balance:</b> <span style="color:#22c55e;font-weight:700">${toDol(u.coins)}</span> | <b>Total Tasks:</b> ${Number(u.tasks||0)}`;
+
+  const histContainer=document.getElementById('vpHistList');
+  histContainer.innerHTML='<tr><td colspan="4" style="text-align:center;color:#8b949e;padding:8px">Loading...</td></tr>';
+  const {data:eh,error:eErr}=await sb.from('gx_earnings').select('offer_name,amount,status,created_at').ilike('username',u.username).order('created_at',{ascending:false}).limit(10);
+  if(eErr||!eh?.length){histContainer.innerHTML='<tr><td colspan="4" style="text-align:center;color:#8b949e;padding:8px">No activities or earnings found</td></tr>';return}
+  histContainer.innerHTML=eh.map(x=>{
+    const status=earningStatus(x.status);
+    return `<tr style="border-bottom:1px solid #21262d"><td style="padding:6px"><b>${escapeHtml(x.offer_name||'Task')}</b></td><td style="padding:6px;color:#22c55e;font-weight:700">+${toDol(x.amount)}</td><td style="padding:6px"><span class="status st-${status.className}">${status.label}</span></td><td style="padding:6px;color:#8b949e;font-size:11px">${x.created_at?new Date(x.created_at).toLocaleDateString():'—'}</td></tr>`;
+  }).join('');
+}
+
+/* ============ AUTH ============ */
+function openAuth(){document.getElementById('overlay').classList.add('show')}
+function toggleAuth(){
+  isRegister=!isRegister;
+  document.getElementById('authTitle').textContent=isRegister?'Register':'Log in';
+  document.getElementById('authSwitch').textContent=isRegister?'Have an account? Log in':'No account? Register';
+  document.getElementById('aEmail').style.display=isRegister?'block':'none';
+}
+async function doAuth(){
+  const u=document.getElementById('aUser').value.trim(),p=document.getElementById('aPass').value;
+  if(!u||!p)return alert('Fill all fields');
+  const ip=await myIP();
+  if(isRegister){
+    const em=document.getElementById('aEmail').value.trim();
+    if(!em)return alert('Please enter your email address');
+    if(!validEmail(em))return alert('Please enter a valid email address');
+    const uid='GX-'+(crypto.randomUUID?crypto.randomUUID().replace(/-/g,'').slice(0,10).toUpperCase():Math.random().toString(36).slice(2,10).toUpperCase());
+    const {data:ex}=await sb.from('gx_users').select('id').eq('email',em).maybeSingle();
+    if(ex)return alert('This email is already in use');
+    const {error}=await sb.from('gx_users').insert([{username:u,password:p,email:em,uid,coins:0,tasks:0,ip}]);
+    if(error)return alert('Username already taken');
+    setSession(u);
+    alert(`🎉 Account created!\n🆔 User ID: ${uid}`);
+  }else{
+    const {data}=await sb.from('gx_users').select('*').ilike('username',u).eq('password',p).maybeSingle();
+    if(!data)return alert('Invalid credentials');
+    if(data.banned)return alert('Account banned');
+    await sb.from('gx_users').update({ip,last_login:new Date().toISOString()}).eq('username',data.username);
+    setSession(data.username);
+  }
+  document.getElementById('overlay').classList.remove('show');
+  initRealtime();
+  refresh();
+}
+function logout(){setSession(null);location.reload()}
+function show(id,el){
+  const ids=['dash','offers','walls','board','chatpg','profile','pubprofile','withdraw','gift'];
+  if(!ids.includes(id))id='dash';
+  ids.forEach(x=>document.getElementById(x).style.display=x===id?'block':'none');
+  if(id==='withdraw')renderWithdrawScheduleNotice();
+  if(id&&id!=='pubprofile')lastPage=id;
+  if(id!=='pubprofile')document.title=DEFAULT_TITLE;
+  document.querySelectorAll('.sidebar a,.mobnav a').forEach(a=>a.classList.remove('active'));
+  document.querySelectorAll(`[data-tab="${id}"]`).forEach(a=>a.classList.add('active'));
+  if(el)el.classList.add('active');
+  window.scrollTo(0,0);
+  if(HASH_MAP[id]){
+    localStorage.setItem('gx_lastTab',id);
+    const newHash='#'+HASH_MAP[id];
+    if(location.hash!==newHash)location.hash=newHash;
+  }
+}
+window.addEventListener('hashchange',()=>{
+  const id=hashToId(location.hash);
+  if(id)show(id);
+});
+
+/* ============ OFFER URL BUILDER ============ */
+function buildOfferUrl(rawUrl,user){
+  let url = rawUrl || '#';
+  if(!url || url === '#') return url;
+  try {
+    const u2 = new URL(url);
+    removeTrackingParams(u2);
+    u2.searchParams.set('s1', user.username);
+    u2.searchParams.set('s2', user.username);
+    url = u2.toString();
+  } catch(e) {}
+  return url;
+}
+function buildOfferwallUrl(rawUrl,user){
+  let url=rawUrl||'#';
+  if(!url||url==='#')return url;
+  try{
+    const u2=new URL(url);
+    removeTrackingParams(u2);
+    for(let i=1;i<=5;i++)u2.searchParams.set(`s${i}`,user.username);
+    url=u2.toString();
+  }catch(e){}
+  return url;
+}
+function removeTrackingParams(url){
+  [...url.searchParams.keys()].forEach(key=>{
+    if(/^s\d+$/i.test(key)||/^(uid|user_?id)$/i.test(key))url.searchParams.delete(key);
+  });
+}
+
+/* ============ OFFERWALLS ============ */
+let curWall=0;
+function isPrivateWall(w){
+  return (w.category==='Private')||(w.title||'').toLowerCase().includes('private');
+}
+function renderWalls(){
+  const walls=allOffers.filter(x=>['Wall','Private','Offerwall'].includes(x.category));
+  document.getElementById('wallTabs').innerHTML=walls.map((x,i)=>
+    `<a class="${i===curWall?'active':''}" onclick="curWall=${i};renderWalls()">${isPrivateWall(x)?'🔒 ':''}${x.title}</a>`).join('');
+  const w=walls[curWall];
+  document.getElementById('wallList').innerHTML=w?`<div class="offer">
+    <div style="display:flex;gap:10px;align-items:center">
+      ${w.logo?`<img src="${w.logo}" style="width:44px;height:44px;border-radius:10px;object-fit:cover" onerror="this.style.display='none'">`:'<div style="width:44px;height:44px;border-radius:10px;background:#21262d;display:flex;align-items:center;justify-content:center">🧱</div>'}
+      <div><b>${isPrivateWall(w)?'🔒 ':''}${w.title}</b><br><span style="color:#8b949e;font-size:13px">${w.description||''}</span><br>
+      <span class="tag">${w.network||'Wall'}</span>${w.iframe?'<span class="tag" style="background:#1c2a1e;color:#7ee2a0">⚡ In-site</span>':''}${isPrivateWall(w)?'<span class="tag" style="background:#2a231c;color:#fbbf24">🔒 Private</span>':''}</div>
+    </div>
+    ${isPrivateWall(w)
+      ? `<button class="btn" style="background:#fbbf24" onclick="openPrivateWall('${w.id}')">🔒 Open Private Wall</button>`
+      : `<button class="btn" onclick="openWallRaw('${w.id}')">Open · ${w.title}</button>`}</div>`
+    :'<p style="color:#8b949e">No offerwalls added yet</p>';
+}
+async function openWallRaw(id){
+  const s=session();if(!s)return openAuth();
+  const w=allOffers.find(x=>x.id===id);if(!w||!w.url||w.url==='#')return alert('Offer link not set');
+  const {data:u}=await sb.from('gx_users').select('username').ilike('username',s).maybeSingle();
+  const targetUrl=buildOfferwallUrl(w.url, u||{username:s});
+  if(w.iframe){document.getElementById('wallModalTitle').textContent='🆓 '+w.title;openWall(targetUrl)}
+  else window.open(targetUrl,'_blank');
+}
+async function openPrivateWall(id){
+  const s=session();if(!s)return openAuth();
+  const w=allOffers.find(x=>x.id===id);if(!w)return;
+  if(!myRefCode){
+    return alert('🔒 This wall is for Private members only!\n\nGo to My Profile → "Apply Referral Code" to apply a code first.');
+  }
+  const requiredCode=(w.network||'').trim().toUpperCase();
+  if(requiredCode&&myRefCode!==requiredCode){
+    return alert('🔒 Invalid referral code!');
+  }
+  if(!w.url||w.url==='#')return alert('Offer link not set');
+  const {data:u}=await sb.from('gx_users').select('username').ilike('username',s).maybeSingle();
+  const targetUrl=buildOfferwallUrl(w.url, u||{username:s});
+  if(w.iframe){document.getElementById('wallModalTitle').textContent='🔒 '+w.title;openWall(targetUrl)}
+  else window.open(targetUrl,'_blank');
+}
+function openWall(url){
+  document.getElementById('wallFrame').src=url;
+  document.getElementById('wallModal').classList.add('show');
+}
+function closeWall(){
+  document.getElementById('wallFrame').src='';
+  document.getElementById('wallModal').classList.remove('show');
+}
+function setCat(c,el){
+  curCat=c;
+  document.querySelectorAll('#tabs a').forEach(a=>a.classList.remove('active'));
+  el.classList.add('active');renderOffers();
+}
+function renderOffers(){
+  let list=allOffers.filter(x=>deviceOk(x)&&!['Wall','Private','Offerwall'].includes(x.category));
+  if(curCat==='Live')list=list.filter(x=>x.live);
+  else if(curCat!=='All')list=list.filter(x=>x.category===curCat&&!x.live);
+  else list=list.filter(x=>!x.live);
+  document.getElementById('offerList').innerHTML=(list||[]).map(x=>`<div class="offer">
+    <div style="display:flex;gap:10px;align-items:center">
+      ${x.logo?`<img src="${x.logo}" style="width:44px; height:44px;border-radius:10px;object-fit:cover" onerror="this.style.display='none'">`:'<div style="width:44px;height:44px;border-radius:10px;background:#21262d;display:flex;align-items:center;justify-content:center">🎯</div>'}
+      <div><b>${x.title}</b>${x.live?' <span class="tag" style="background:#2a1c1c;color:#ef4444">🔴 LIVE</span>':''}<br><span style="color:#8b949e;font-size:13px">${x.description||''}</span><br>
+      <span class="tag">${x.category}</span><span class="tag">${x.network}</span>${x.iframe?'<span class="tag" style="background:#1c2a1e;color:#7ee2a0">⚡ In-site</span>':''}</div>
+    </div>
+    <button class="btn" onclick="doOffer('${x.id}')">Start · <span class="dollar">+${toDol(x.reward)}</span></button></div>`).join('')
+    ||'<p style="color:#8b949e">'+(curCat==='Live'?'🔴 No live offers right now':'No offers available')+'</p>';
+  document.getElementById('quickList').innerHTML=(allOffers||[]).filter(x=>deviceOk(x)&&!['Wall','Private','Offerwall'].includes(x.category)&&!x.live).slice(0,3).map(x=>`<div class="offer">
+    <div style="display:flex;gap:10px;align-items:center">
+      ${x.logo?`<img src="${x.logo}" style="width:44px;height:44px;border-radius:10px;object-fit:cover" onerror="this.style.display='none'">`:'<div style="width:44px;height:44px;border-radius:10px;background:#21262d;display:flex;align-items:center;justify-content:center">🎯</div>'}
+      <div><b>${x.title}</b><br><span class="tag">${x.category}</span></div>
+    </div>
+    <button class="btn" onclick="doOffer('${x.id}')">Start</button></div>`).join('');
+}
+async function doOffer(id){
+  const s=session();if(!s)return openAuth();
+  const {data:u}=await sb.from('gx_users').select('username').ilike('username',s).maybeSingle();
+  if(!u)return;
+  const offer=allOffers.find(x=>x.id===id);
+  if(!offer)return;
+  const url=buildOfferUrl(offer.url,u);
+  if(!url||url==='#')return alert('Offer link not set');
+  if(offer.iframe)openWall(url);
+  else window.open(url,'_blank');
+}
+async function loadOffers(){
+  const {data:list}=await sb.from('gx_offers').select('*').eq('active',true).order('reward',{ascending:false});
+  allOffers=(list||[]).filter(deviceOk);
+  renderOffers();
+  renderWalls();
+}
+
+/* ============ WITHDRAW ============ */
+async function withdraw(){
+  const s=session();if(!s)return openAuth();
+  if(!isWithdrawDayActive())return alert(WITHDRAW_SCHEDULE_MSG);
+  const method=selectedWithdrawMethod;
+  if(!method)return alert('Please select a withdraw method');
+  const amt=toAmt(document.getElementById('wAmt').value);
+  const contact=document.getElementById('wContact').value.trim();
+  const name=document.getElementById('wName').value.trim();
+  if(!name)return alert('Please enter your name');
+  if(!contact)return alert('Please provide your wallet / account number');
+  if(MOBILE_METHODS.includes(method)&&!/^01[3-9]\d{8}$/.test(contact))return alert('Please enter a valid 11-digit mobile number (e.g. 01XXXXXXXXX)');
+  if(method==='PayPal'&&!validEmail(contact))return alert('Please enter a valid PayPal email');
+  const {data:u}=await sb.from('gx_users').select('*').ilike('username',s).maybeSingle();
+  if(!u||Number(u.coins)<WITHDRAW_MIN)return alert('Insufficient balance. A minimum balance of $50 is required to withdraw.');
+  if(!amt||amt<WITHDRAW_MIN)return alert('Minimum withdrawal amount is $'+WITHDRAW_MIN);
+  if(Number(u.coins)<amt)return alert('Insufficient balance.');
+  const {start,end}=withdrawWeekWindow();
+  const {data:existing}=await sb.from('gx_withdrawals').select('created_at').ilike('username',u.username).gte('created_at',start.toISOString()).lt('created_at',end.toISOString()).limit(1);
+  if(existing&&existing.length)return alert('You have already submitted a withdrawal request for this Sunday-Monday period. Only one request is allowed per week.');
+  await sb.from('gx_users').update({coins:Number(u.coins)-amt}).ilike('username',s);
+  await sb.from('gx_withdrawals').insert([{username:u.username,method:method+' → '+contact+' (Name: '+name+')',amount:amt}]);
+  document.getElementById('wAmt').value='';document.getElementById('wContact').value='';document.getElementById('wName').value='';
+  alert('Withdraw request submitted!');
+  refresh();
+}
+
+/* ---- Global Chat ---- */
+async function fetchChat(){
+  const {data}=await sb.from('gx_chat').select('*').order('created_at',{ascending:false}).limit(60);
+  chatCache=(data||[]).reverse();renderChat();
+}
+function renderChat(){
+  const box=document.getElementById('msgs');
+  box.innerHTML=chatCache.map(m=>
+    `<div class="msg"><b>${m.username}</b> <span style="color:#8b949e;font-size:12px">${new Date(m.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span><br>${m.text}</div>`).join('');
+  box.scrollTop=box.scrollHeight;
+}
+async function sendChat(){
+  const inp=document.getElementById('chatIn'),txt=inp.value.trim();
+  if(!txt)return;
+  const s=session();if(!s)return openAuth();
+  await sb.from('gx_chat').insert([{username:s,text:txt}]);
+  inp.value='';
+}
+fetchChat();
+setInterval(fetchChat,5000);
+
+/* ============ REALTIME LISTENER ============ */
+let realtimeChannel=null;
+function initRealtime(){
+  const s=session();
+  if(!s) return;
+  if(realtimeChannel) sb.removeChannel(realtimeChannel);
+
+  realtimeChannel = sb.channel('user-live-sync-' + s)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'gx_earnings' }, payload => {
+      const u = (payload.new?.username || payload.old?.username || '').toLowerCase();
+      if (u === s.toLowerCase()) {
+        const earning=payload.new||payload.old||{};
+        const status=String(earning.status||'pending').toLowerCase();
+        const title=status==='pending'?'Transaction pending':'Points credited';
+        const message=status==='pending'
+          ?`${earning.offer_name||earning.title||'A transaction'} is now pending.`
+          :`${toDol(earning.amount)} was credited to your account.`;
+        signalLiveNotification(`earning:${earning.id||earning.created_at||JSON.stringify(earning)}:${status}`,title,message,earning.created_at);
+        loadHist(s);
+        refresh();
+      }
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'gx_withdrawals' }, payload => {
+      const u = (payload.new?.username || payload.old?.username || '').toLowerCase();
+      if (u === s.toLowerCase()) {
+        const withdrawal=payload.new||payload.old||{};
+        if(String(withdrawal.status||'pending').toLowerCase()==='pending'){
+          signalLiveNotification(`withdrawal:${withdrawal.id||withdrawal.created_at||JSON.stringify(withdrawal)}`,'Withdrawal pending',`${toDol(withdrawal.amount)} withdrawal is now pending.`,withdrawal.created_at);
+        }
+        loadHist(s);
+        refresh();
+      }
+    })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'gx_users' }, payload => {
+      const u = (payload.new?.username || '').toLowerCase();
+      if (u === s.toLowerCase()) {
+        refresh();
+      }
+    })
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gx_notifs' }, payload => {
+      const u = (payload.new?.username || '').toLowerCase();
+      if (u === 'all' || u === s.toLowerCase()) {
+        const notification=payload.new||{};
+        signalLiveNotification(`notification:${notification.id||notification.created_at||JSON.stringify(notification)}`,notification.title||'New notification',notification.message||notification.body||'You have a new account update.',notification.created_at);
+        loadNotifs(); refresh();
+      }
+    })
+    .subscribe();
+}
+
+try{
+  sb.channel('chat').on('postgres_changes',{event:'INSERT',schema:'public',table:'gx_chat'},
+    p=>{chatCache.push(p.new);renderChat()}).subscribe();
+}catch(e){}
+sb.channel('offers').on('postgres_changes',{event:'*',schema:'public',table:'gx_offers'},()=>loadOffers()).subscribe();
+
+document.addEventListener('DOMContentLoaded', () => {
+  refreshIcons();
+  show(getInitialTab());
+  applyCachedBalance();
+  refresh();
+  loadOffers();
+  initRealtime();
+});
+</script>
+</body>
+</html>
